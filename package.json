@@ -1,0 +1,54 @@
+{
+    "name": "trusty-rabbit",
+    "version": "0.1.0",
+    "description": "Trustworthy and easy to use RabbitMQ client, supports auto-reconnect and graceful stop.",
+    "main": "dist/index.js",
+    "typings": "./dist/index.d.ts",
+    "files": [
+        "dist/",
+        "package.json",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "test": "jest",
+        "test:cov": "jest --coverage",
+        "clean": "rimraf ./dist/ ./tsconfig.build.tsbuildinfo",
+        "compile": "tsc -p tsconfig.json",
+        "build": "npm run clean && npm run compile",
+        "prepublishOnly": "npm run build",
+        "lint": "eslint src/**.ts",
+        "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\""
+    },
+    "keywords": [
+        "queue",
+        "message queue",
+        "rabbit",
+        "rabbitmq",
+        "amqp",
+        "amqplib",
+        "amqp.node"
+    ],
+    "author": {
+        "name": "AaronJan",
+        "url": "https://github.com/AaronJan"
+    },
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "@types/amqplib": "^0.5.13",
+        "@types/jest": "^24.0.16",
+        "@types/node": "^12.6.8",
+        "@typescript-eslint/eslint-plugin": "^1.13.0",
+        "@typescript-eslint/parser": "^1.13.0",
+        "eslint": "^6.1.0",
+        "jest": "^24.8.0",
+        "prettier": "^1.18.2",
+        "rimraf": "^2.6.3",
+        "ts-jest": "^24.0.2",
+        "ts-node": "^8.3.0",
+        "typescript": "^3.5.3"
+    },
+    "dependencies": {
+        "amqplib": "^0.5.5"
+    }
+}
