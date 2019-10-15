@@ -5,7 +5,7 @@ import { DummyLogger } from './dummy-logger';
 import { sleep } from './helpers';
 
 export interface ConsumptionExceptionHandler {
-  (message: amqp.Message, err: any): Promise<void>;
+  (message: amqp.Message, err: any): Promise<boolean>;
 }
 
 export interface ConsumerOptions {
@@ -39,12 +39,13 @@ export class Consumer<T> implements IConsumer<T> {
     this.logger = logger;
     this.queue = queue;
     this.prefetch = prefetch;
-    this.exceptionHandler =
-      exceptionHandler !== undefined
-        ? exceptionHandler
-        : async err => {
-          logger.error('SuccessfulRabbit: Unexpected exception while consuming:', err);
-        };
+    this.exceptionHandler = exceptionHandler !== undefined
+      ? exceptionHandler
+      : async (message, err) => {
+        logger.error('SuccessfulRabbit: Unexpected exception while consuming (this message will be discarded.)', message, err);
+
+        return false;
+      };
   }
 
   private async consumeConnection(connection: Connection, processor: Processor<T>) {
@@ -85,10 +86,8 @@ export class Consumer<T> implements IConsumer<T> {
             channel.nack(message, false, false);
           }
         } catch (err) {
-          await this.exceptionHandler(message, err);
-
-          // Discard this message when exception occurs.
-          channel.nack(message, false, false);
+          const requeue = await this.exceptionHandler(message, err);
+          channel.nack(message, false, requeue);
         } finally {
           this.processingCount--;
         }
