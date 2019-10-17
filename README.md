@@ -1,4 +1,4 @@
-# Trushty Rabbit (Alpha Version)
+# Trusty Rabbit (Alpha Version)
 
 Trustworthy and easy to use RabbitMQ client, supports auto-reconnect and graceful stop.
 
