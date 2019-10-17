@@ -44,7 +44,7 @@ export interface Processor<T> {
 }
 
 export interface Publisher<T> {
-  publish(key: string, content: T): Promise<void>;
+  publish(routingKey: string, content: T): Promise<void>;
   stop(closeConnection?: boolean): Promise<void>;
 }
 

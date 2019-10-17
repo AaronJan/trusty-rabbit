@@ -58,7 +58,7 @@ export class Publisher<T> implements IPublisher<T> {
     this.connection.on('reconnected', this.reconnectionedListener);
   }
 
-  async publish(key: string, content: T): Promise<void> {
+  async publish(routingKey: string, content: T): Promise<void> {
     if (this.stopping) {
       throw new Error('SuccessfulRabbit: Publisher is stopping or stopped.');
     }
@@ -73,7 +73,7 @@ export class Publisher<T> implements IPublisher<T> {
 
         const isFull = (<amqp.ConfirmChannel>this.channel).publish(
           this.exchange.name,
-          key,
+          routingKey,
           encodedContent,
           {
             persistent: true,
