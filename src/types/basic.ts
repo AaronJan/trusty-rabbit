@@ -40,11 +40,11 @@ export interface Connection {
 }
 
 export interface Processor<T> {
-  (content: T, message: amqp.Message): Promise<boolean>;
+  (messageID: string, content: T, message: amqp.Message): Promise<boolean>;
 }
 
 export interface Publisher<T> {
-  publish(routingKey: string, content: T): Promise<void>;
+  publish(routingKey: string, messageID: string, content: T): Promise<void>;
   stop(closeConnection?: boolean): Promise<void>;
 }
 

@@ -34,8 +34,8 @@ const publisher = new Publisher(connection, {
   },
 });
 
-// Pass routing key and content (content must be JSON-stringifiable), done!
-await publisher.publish('key.0', {
+// Passing messageID, routing key and content (content must be JSON-stringifiable), done!
+await publisher.publish('messageID', 'key.0', {
   value: 'content',
 });
 
@@ -67,9 +67,9 @@ const consumer = new Consumer(connection, {
   queue,
   prefetch: 1,
 });
-await consumer.consume(async (content: any, message) => {
+await consumer.consume(async (messageID: string, content: any, message) => {
   // You can use the parsed content directly.
-  console.log(`Content: ${content.value}`);
+  console.log(`Message ID: ${messageID}, Content: ${content.value}`);
 
   // Or, you can do stuff with the `amqp.Message`
   console.log(`Buffer content:`, message.content);

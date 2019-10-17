@@ -58,7 +58,7 @@ export class Publisher<T> implements IPublisher<T> {
     this.connection.on('reconnected', this.reconnectionedListener);
   }
 
-  async publish(routingKey: string, content: T): Promise<void> {
+  async publish(routingKey: string, messageID: string, content: T): Promise<void> {
     if (this.stopping) {
       throw new Error('SuccessfulRabbit: Publisher is stopping or stopped.');
     }
@@ -77,6 +77,7 @@ export class Publisher<T> implements IPublisher<T> {
           encodedContent,
           {
             persistent: true,
+            messageId: messageID,
           },
           (err, ok) => {
             this.sendingCount--;

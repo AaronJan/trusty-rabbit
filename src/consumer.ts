@@ -77,7 +77,7 @@ export class Consumer<T> implements IConsumer<T> {
           this.processingCount++;
 
           const content: T = JSON.parse(message.content.toString('utf8'));
-          const doAck = await processor(content, message);
+          const doAck = await processor(message.properties.messageId, content, message);
 
           if (doAck) {
             channel.ack(message);
