@@ -1,6 +1,6 @@
 {
     "name": "trusty-rabbit",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Trustworthy and easy to use RabbitMQ client, supports auto-reconnect and graceful stop.",
     "main": "dist/index.js",
     "typings": "./dist/index.d.ts",
