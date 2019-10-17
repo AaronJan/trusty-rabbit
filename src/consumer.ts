@@ -5,7 +5,7 @@ import { DummyLogger } from './dummy-logger';
 import { sleep } from './helpers';
 
 export interface ConsumptionExceptionHandler {
-  (message: amqp.Message, err: any): Promise<boolean>;
+  (messageID: string, message: amqp.Message, err: any): Promise<boolean>;
 }
 
 export interface ConsumerOptions {
@@ -86,7 +86,7 @@ export class Consumer<T> implements IConsumer<T> {
             channel.nack(message, false, false);
           }
         } catch (err) {
-          const requeue = await this.exceptionHandler(message, err);
+          const requeue = await this.exceptionHandler(message.properties.messageId, message, err);
           channel.nack(message, false, requeue);
         } finally {
           this.processingCount--;
